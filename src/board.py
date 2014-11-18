@@ -36,7 +36,27 @@ class Board(object):
     #Have to move right, passing unoccupied spaces until it hits the end of the grid, 
     #or hits a number that is different than the moving tile and stops
     #If the tile it collides with is the same, then sum the values/collapse the tile
+    for i in xrange(4):
+      for i in xrange(2, -1): #i is the location of the tile when we found it
+        if self.grid[0][i] != 0:
+          j = i #j is the location of the tile as we're processing it/right now
+          while j != 3 and self.grid[0][j+1] == 0:
+            self.grid[0][j+1] = self.grid[0][j]
+            self.grid[0][j] = 0
+            j += 1
+          if j < 3 and self.grid[0][j+1] == self.grid[0][j]:
+            self.grid[0][j+1] *= 2
+          else:
+            continue
 
+  def moveLeft(self):
+    #workon own
+
+  def moveUp(self):
+    #for next time
+
+  def moveDown(self):
+    #workon own
 
 #start
 
