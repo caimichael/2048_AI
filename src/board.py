@@ -7,7 +7,7 @@ import random
 class Board(object):
 
   def start(self):
-    grid = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    self.grid = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     for t in xrange(1):
       val = getRandomValue()
       pos = self.getRandomPosition() #you already know that the value chosen is unoccupied
@@ -19,9 +19,24 @@ class Board(object):
     self.grid[x][y] = val
 
   def getRandomValue():
+    if random.random() > .1:
+      return 2
+    else:
+      return 4
     
-    
-  def getRandomPosition():
+  def getRandomPosition(self):
+    unoccupied_spaces = []
+    for x, row in enumerate(self.grid):
+      for y, val in enumerate(row):
+        if val == 0:
+          unoccupied_spaces.append((x,y))
+    return random.choice(unoccupied_spaces)
+
+  def moveRight(self):
+    #Have to move right, passing unoccupied spaces until it hits the end of the grid, 
+    #or hits a number that is different than the moving tile and stops
+    #If the tile it collides with is the same, then sum the values/collapse the tile
+
 
 #start
 
