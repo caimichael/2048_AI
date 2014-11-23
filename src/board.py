@@ -8,7 +8,7 @@ class Board(object):
 
   def start(self):
     self.grid = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
-    for t in xrange(1):
+    for tile in xrange(2):
       val = getRandomValue()
       pos = self.getRandomPosition() #you already know that the value chosen is unoccupied
       self.addTile(pos, val)
@@ -32,20 +32,30 @@ class Board(object):
           unoccupied_spaces.append((x,y))
     return random.choice(unoccupied_spaces)
 
+  def addRandomTile(self):
+    val = getRandomValue()
+    pos = self.getRandomPosition() #you already know that the value chosen is unoccupied
+    self.addTile(pos, val)
+
+  def makeMove(self, func): 
+    self.func()
+    self.addRandomTile()
+
   def moveRight(self):
     #Have to move right, passing unoccupied spaces until it hits the end of the grid, 
     #or hits a number that is different than the moving tile and stops
     #If the tile it collides with is the same, then sum the values/collapse the tile
-    for i in xrange(4):
-      for i in xrange(2, -1): #i is the location of the tile when we found it
-        if self.grid[0][i] != 0:
-          j = i #j is the location of the tile as we're processing it/right now
-          while j != 3 and self.grid[0][j+1] == 0:
-            self.grid[0][j+1] = self.grid[0][j]
-            self.grid[0][j] = 0
-            j += 1
-          if j < 3 and self.grid[0][j+1] == self.grid[0][j]:
-            self.grid[0][j+1] *= 2
+    for row in xrange(4):
+      for start_tile in xrange(2, -1): #i is the location of the tile when we found it
+        if self.grid[row][start_tile] != 0:
+          current_tile = start_tile #j is the location of the tile as we're processing it/right now
+          while current_tile != 3 and self.grid[row][current_tile+1] == 0:
+            self.grid[row][current_tile+1] = self.grid[row][current_tile]
+            self.grid[row][current_tile] = 0
+            current_tile += 1
+          if current_tile < 3 and self.grid[row][current_tile+1] == self.grid[row][current_tile]:
+            self.grid[row][current_tile+1] *= 2
+            self.grid[row][current_tile] = 0
           else:
             continue
 
@@ -53,7 +63,19 @@ class Board(object):
     #workon own
 
   def moveUp(self):
-    #for next time
+    for col in xrange(4):
+      for start_tile in xrange(1,4):
+        if self.grid[start_tile][col] != 0:
+          current_tile = start_tile
+          while current_tile != 0 and self.grid[current_tile-1][col] == 0:
+            self.grid[current_tile-1][col] = self.grid[current_tile][col]
+            self.grid[current_tile][col] = 0
+            current_tile -= 1
+          if current_tile > 0 and self.grid[current_tile-1][col] == self.grid[current_tile][col]:
+            self.grid[current_tile-1][col] *=2
+            self.grid[current_tile][col] = 0
+          else:
+            continue
 
   def moveDown(self):
     #workon own
